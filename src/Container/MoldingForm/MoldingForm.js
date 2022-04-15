@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {Label, Input} from 'reactstrap';
 
+import { bftFactor, lumberWeightFactor, otherCharges, findRunCost } from '../../Functions';
+
 class MoldingForm extends Component {
   constructor(props){
     super(props);
@@ -58,11 +60,11 @@ class MoldingForm extends Component {
   handleClick = () => {
     this.setState({ 
       
-      runCostValue: runCost(this.state.formData.patternWidth, this.state.formData.category, this.state.formData.quantity),
+      runCostValue: findRunCost(this.state.formData.patternWidth, this.state.formData.category, this.state.formData.quantity),
 
-      bftFactorValue: bftFactor(this.state.formData.patternWidth, lumberThickness),
+      bftFactorValue: bftFactor(this.state.formData.patternWidth, this.state.formData.lumberThickness),
 
-      bftRequired: (this.state.formData.quantity * bftFactorValueCalc),
+      bftRequired: (this.state.formData.quantity * this.state.bftFactorValue),
 
       otherChargesPercentage: otherCharges(this.state.formData.clearYN, this.state.formData.cutbacksYN, this.state.formData.resawingYN),
     });
@@ -175,14 +177,90 @@ class MoldingForm extends Component {
                 <option value='12/4'>12/4</option>
               </Input>
             </Label>
-              quantity
-              lumberCost
-              clearYN
-              cutbacksYN
-              newKnifeYN
-              resawingYN
-
-            
+            <Label>
+              Quantity:
+            <Input type="number" name='quantity' value={this.state.formData.quantity} onChange={this.handleChange} />
+            </Label>
+            <Label>
+              Lumber Cost:
+              <Input type="number" name='lumberCost' value={this.state.formData.lumberCost} onChange={this.handleChange} />
+            </Label>
+            <Label>
+              Markup%:
+              <Input type="number" name='markup' value={this.state.formData.markup} onChange={this.handleChange} />
+            </Label>
+            <Label>
+              Clear:
+              <Input type="select" name='clearYN' value={this.state.formData.clearYN} onChange={this.handleChange} >
+                <option value='y'>Yes</option>
+                <option value='n'>No</option>
+              </Input>
+            </Label>
+            <Label>
+              Cutbacks:
+              <Input type="select" name='cutbacksYN' value={this.state.formData.cutbacksYN} onChange={this.handleChange} >
+                <option value='y'>Yes</option>
+                <option value='n'>No</option>
+              </Input>
+            </Label>
+            <Label>
+              New Knife:
+              <Input type="select" name='newKnifeYN' value={this.state.formData.newKnifeYN} onChange={this.handleChange} >
+                <option value='y'>Yes</option>
+                <option value='n'>No</option>
+              </Input>
+            </Label>
+            <Label>
+              Resawing:
+              <Input type="select" name='resawingYN' value={this.state.formData.resawingYN} onChange={this.handleChange} >
+                <option value='y'>Yes</option>
+                <option value='n'>No</option>
+              </Input>
+            </Label>
+            <Label>
+              Species:
+              <Input type="select" name='species' value={this.state.formData.species} onChange={this.handleChange} >
+                <option value="Alder">Alder</option>
+                <option value="Ash">Ash</option>
+                <option value="Basswood">Basswood</option>
+                <option value="Beech">Beech</option>
+                <option value="Birch, Yellow">Birch, Yellow</option>
+                <option value="Cedar, Aromatic">Cedar, Aromatic</option>
+                <option value="Cedar, Spanish">Cedar, Spanish</option>
+                <option value="Cedar, Western Red">Cedar, Western Red</option>
+                <option value="Cherry">Cherry</option>
+                <option value="Cypress,Sinker">Cypres, Sinker</option>
+                <option value="Cypress, Yellow">Cypress, Yellow</option>
+                <option value="Fir">Fir</option>
+                <option value="Hickory">Hickory</option>
+                <option value="Ipe">Ipe</option>
+                <option value="Jatoba">Jatoba</option>
+                <option value="Mahogany, African">Mahogany, African</option>
+                <option value="Makore">Makore</option>
+                <option value="Maple, Hard">Maple, Hard</option>
+                <option value="Maple, Pacific">Maple, Pacific</option>
+                <option value="Maple, Soft">Maple, Soft</option>
+                <option value="Oak, Red">Oak, Red</option>
+                <option value="Oak, White">Oak, White</option>
+                <option value="Padauk">Padauk</option>
+                <option value="Pecan">Pecan</option>
+                <option value="Pine, East">Pine, Eastern</option>
+                <option value="Pine, Ponderossa">Pine, Ponderossa</option>
+                <option value="Pine, Radiata">Pine, Radiata</option>
+                <option value="Pine, Sinker">Pine, Sinker</option>
+                <option value="Pine, Yellow">Pine, Yellow</option>
+                <option value="Poplar, Yellow">Poplar, Yellow</option>
+                <option value="Purpleheart">Purpleheart</option>
+                <option value="Redwood">Redwood</option>
+                <option value="Sapele">Sapele</option>
+                <option value="Teak">Teak</option>
+                <option value="Walnut">Walnut</option>
+              </Input>
+            </Label>
+            <Label>
+              Comments:
+              <Input type='textarea' name='comments' value={this.state.formData.comments} onChange={this.handleChange} />
+            </Label>            
           </div>
         </div>
       </>

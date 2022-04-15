@@ -1,5 +1,5 @@
 /* eslint-disable default-case */
-function findRunCost(patternWidth, category, quantity) {
+export default function findRunCost(patternWidth, category, quantity) {
     let runCost;
 
     if(patternWidth < 6) {

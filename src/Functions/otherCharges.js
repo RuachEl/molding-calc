@@ -1,4 +1,4 @@
-function otherCharges(clearYN, cutbacksYN, resawingYN) {
+export default function otherCharges(clearYN, cutbacksYN, resawingYN) {
     let otherChargesPercentage = 0;
 
     if(clearYN === 'y') {
