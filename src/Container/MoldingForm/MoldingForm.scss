@@ -1,0 +1,23 @@
+.app__form {
+    background-color: blanchedalmond;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    
+    @media screen and (max-width: 400px) {
+        width: 100%        
+    }
+}
+
+.app__form-item {
+    padding: 0.25rem;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    
+}
+
