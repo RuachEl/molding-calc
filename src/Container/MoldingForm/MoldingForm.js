@@ -9,7 +9,6 @@ class MoldingForm extends Component {
   constructor(props){
     super(props);
     this.state = {
-      formData: {
       customerName: '',
       customerID: '',
       quoteNumber: '',
@@ -26,8 +25,7 @@ class MoldingForm extends Component {
       resawingYN: '',
       species: '',
       comments: '',
-      markup: ''
-      },
+      markup: '',
       runCostValue: '',
       bftFactorValue: '',
       bftRequired: '',
@@ -47,6 +45,7 @@ class MoldingForm extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleReset = this.handleReset.bind(this);
   
   }
 
@@ -63,34 +62,37 @@ class MoldingForm extends Component {
   handleClick = () => {
     this.setState({ 
       
-      runCostValue: findRunCost(this.state.formData.patternWidth, this.state.formData.category, this.state.formData.quantity),
+      runCostValue: findRunCost(this.state.patternWidth, this.state.category, this.state.quantity),
 
-      bftFactorValue: bftFactor(this.state.formData.patternWidth, this.state.formData.lumberThickness),
+      bftFactorValue: bftFactor(this.state.patternWidth, this.state.lumberThickness),
 
-      bftRequired: (this.state.formData.quantity * this.state.bftFactorValue),
+      bftRequired: (this.state.quantity * this.state.bftFactorValue),
 
-      otherChargesPercentage: otherCharges(this.state.formData.clearYN, this.state.formData.cutbacksYN, this.state.formData.resawingYN),
+      otherChargesPercentage: otherCharges(this.state.clearYN, this.state.cutbacksYN, this.state.resawingYN),
     });
 
       switch(this.state.runCostValue) {
         case(this.state.runCostValue > 1):
-          this.setState({ runCharge: this.state.runCostValue});
+          this.setState({ 
+            runCharge: this.state.runCostValue
+          });
           break;
         case(this.state.runCostValue < 1):
           this.setState({ 
-            runCharge: this.state.runCostValue * this.state.formData.quantity
+            runCharge: this.state.runCostValue * this.state.quantity
           });
+          break;
       }
 
     this.setState({
-      lumberCostTotal: (this.state.bftRequired * this.state.formData.lumberCost),
+      lumberCostTotal: (this.state.bftRequired * this.state.lumberCost),
 
       subtotal1: (this.state.lumberCostTotal * this.state.runCharge),
 
       additionalCharge: (this.state.subtotal1 * this.state.otherChargesPercentage),
     });
 
-    if(this.state.formData.newKnifeYN === 'y'){ 
+    if(this.state.newKnifeYN === 'y'){ 
       this.setState({
         knifeCharge: 50
       })
@@ -99,19 +101,18 @@ class MoldingForm extends Component {
     this.setState({
       subtotal2: (this.state.subtotal1 + this.state.additionalCharge + this.state.knifeCharge),
 
-      markupPercentage: (this.state.formData.markup / 100),
+      markupPercentage: (this.state.markup / 100),
 
       totalPrice: (this.state.subtotal2 * (1 + this.state.markupPercentage)),
 
-      totalPerLFT: (this.state.totalPrice / this.state.formData.quantity),
+      totalPerLFT: (this.state.totalPrice / this.state.quantity),
 
-      lumberWeightFactorValue: lumberWeightFactor(this.state.formData.species)
+      lumberWeightFactorValue: lumberWeightFactor(this.state.species)
     });
   }
 
   handleReset = () => {
     this.setState({
-      formData: {
         customerName: '',
         customerID: '',
         quoteNumber: '',
@@ -128,8 +129,7 @@ class MoldingForm extends Component {
         resawingYN: '',
         species: '',
         comments: '',
-        markup: ''
-        },
+        markup: '',
         runCostValue: '',
         bftFactorValue: '',
         bftRequired: '',
@@ -154,39 +154,63 @@ class MoldingForm extends Component {
         <div className='app__form'>
           <Form>
             <div className='app__form-item'>
-              <Label>
+              <label>
                 Customer Name:
-                <Input type="text" name='customerName' value={this.state.formData.customerName} onChange={this.handleChange}/>
-              </Label>
+                <input type="text" name='customerName' 
+                  value={this.state.customerName} 
+                  onChange={this.handleChange}
+                  required
+                />
+              </label>
             </div>
             <div className='app__form-item'>
               <Label>
                 Customer #:
-                <Input type="text"  name='customerID' value={this.state.formData.customerID} onChange={this.handleChange} />
+                <Input type="text"  name='customerID' 
+                  value={this.state.customerID} 
+                  onChange={this.handleChange}
+                  required
+                />
               </Label>
             </div>
             <div className='app__form-item'>
               <Label>
                 Quote Number:
-                <Input type="number" name='quoteNumber' value={this.state.formData.quoteNumber} onChange={this.handleChange} />
+                <Input type="number" name='quoteNumber' 
+                  value={this.state.quoteNumber} 
+                  onChange={this.handleChange}
+                  required
+                />
               </Label>
             </div>
             <div className='app__form-item'>
               <Label>
                 Order Date:
-                <Input type="date" name='orderDate' value={this.state.formData.orderDate} onChange={this.handleChange} />
+                <Input type="date" name='orderDate' 
+                  value={this.state.orderDate} 
+                  onChange={this.handleChange} 
+                  required
+                />
               </Label>
             </div>
             <div className='app__form-item'>
               <Label>
                 Ship Date:
-                <Input type="date" name='requestShip' value={this.state.formData.requestShip} onChange={this.handleChange} />
+                <Input type="date" name='requestShip' 
+                  value={this.state.requestShip} 
+                  onChange={this.handleChange}
+                  required
+                />
               </Label>
             </div>
             <div className='app__form-item'>
               <Label>
                 Pattern Width:
-                <Input type="select" name='patternWidth' value={this.state.formData.patternWidth} onChange={this.handleChange} required>
+                <Input type="select" name='patternWidth' 
+                  value={this.state.patternWidth} 
+                  onChange={this.handleChange} 
+                  required
+                >
                   <option default disabled></option>
                   <option value='0.50'>1/2"</option>
                   <option value='0.625'>5/8"</option>
@@ -218,7 +242,11 @@ class MoldingForm extends Component {
             <div className='app__form-item'>
               <Label>
                 Category:
-                <Input type="select" name='category' value={this.state.formData.category} onChange={this.handleChange} required>
+                <Input type="select" name='category' 
+                  value={this.state.category} 
+                  onChange={this.handleChange} 
+                  required
+                >
                   <option default disabled></option>
                   <option value='s4s'>S4S</option>
                   <option value='standard'>Standard</option>
@@ -229,7 +257,11 @@ class MoldingForm extends Component {
             <div className='app__form-item'>
               <Label>
                 Lumber Thickness:
-                <Input type='select' name='lumberThickness' value={this.state.formData.lumberThickness} onChange={this.handleChange} required>
+                <Input type='select' name='lumberThickness' 
+                  value={this.state.lumberThickness} 
+                  onChange={this.handleChange} 
+                  required
+                >
                   <option default disabled></option>
                   <option value='4/4'>4/4</option>
                   <option value='5/4'>5/4</option>
@@ -243,25 +275,41 @@ class MoldingForm extends Component {
             <div className='app__form-item'>
               <Label>
                 Quantity:
-              <Input type="number" name='quantity' value={this.state.formData.quantity} onChange={this.handleChange} />
+              <Input type="number" name='quantity' 
+                value={this.state.quantity} 
+                onChange={this.handleChange} 
+                required
+              />
               </Label>
             </div>
             <div className='app__form-item'>
               <Label>
                 Lumber Cost:
-                <Input type="number" name='lumberCost' value={this.state.formData.lumberCost} onChange={this.handleChange} />
+                <Input type="number" name='lumberCost' 
+                  value={this.state.lumberCost} 
+                  onChange={this.handleChange} 
+                  required
+                />
               </Label>
             </div>
             <div className='app__form-item'>
               <Label>
                 Markup%:
-                <Input type="number" name='markup' value={this.state.formData.markup} onChange={this.handleChange} />
+                <Input type="number" name='markup' 
+                  value={this.state.markup} 
+                  onChange={this.handleChange} 
+                  required
+                />
               </Label>
             </div>
             <div className='app__form-item'>
               <Label>
                 Clear:
-                <Input type="select" name='clearYN' value={this.state.formData.clearYN} onChange={this.handleChange} required>
+                <Input type="select" name='clearYN' 
+                  value={this.state.clearYN} 
+                  onChange={this.handleChange} 
+                  required
+                >
                   <option default disabled></option>
                   <option value='y'>Yes</option>
                   <option value='n'>No</option>
@@ -271,7 +319,11 @@ class MoldingForm extends Component {
             <div className='app__form-item'>
               <Label>
                 Cutbacks:
-                <Input type="select" name='cutbacksYN' value={this.state.formData.cutbacksYN} onChange={this.handleChange} required>
+                <Input type="select" name='cutbacksYN' 
+                  value={this.state.cutbacksYN} 
+                  onChange={this.handleChange} 
+                  required
+                >
                   <option default disabled></option>
                   <option value='y'>Yes</option>
                   <option value='n'>No</option>
@@ -281,7 +333,11 @@ class MoldingForm extends Component {
             <div className='app__form-item'>
               <Label>
                 New Knife:
-                <Input type="select" name='newKnifeYN' value={this.state.formData.newKnifeYN} onChange={this.handleChange} required>
+                <Input type="select" name='newKnifeYN' 
+                  value={this.state.newKnifeYN} 
+                  onChange={this.handleChange} 
+                  required
+                >
                   <option default disabled></option>  
                   <option value='y'>Yes</option>
                   <option value='n'>No</option>
@@ -291,7 +347,11 @@ class MoldingForm extends Component {
             <div className='app__form-item'>
               <Label>
                 Resawing:
-                <Input type="select" name='resawingYN' value={this.state.formData.resawingYN} onChange={this.handleChange} required>
+                <Input type="select" name='resawingYN' 
+                  value={this.state.resawingYN} 
+                  onChange={this.handleChange} 
+                  required
+                >
                   <option default disabled></option>
                   <option value='y'>Yes</option>
                   <option value='n'>No</option>
@@ -301,7 +361,11 @@ class MoldingForm extends Component {
             <div className='app__form-item'>
               <Label>
                 Species:
-                <Input type="select" name='species' value={this.state.formData.species} onChange={this.handleChange} required>
+                <Input type="select" name='species' 
+                  value={this.state.species} 
+                  onChange={this.handleChange} 
+                  required
+                >
                   <option default disabled></option>
                   <option default disabled></option>
                   <option value="Alder">Alder</option>
@@ -345,7 +409,10 @@ class MoldingForm extends Component {
             <div className='app__form-item'> 
               <Label>
                 Comments:
-                <Input type='textarea' name='comments' value={this.state.formData.comments} onChange={this.handleChange} />
+                <Input type='textarea' name='comments' 
+                  value={this.state.comments} 
+                  onChange={this.handleChange} 
+                />
               </Label>
             </div>
             <div className='app__form-item'>
