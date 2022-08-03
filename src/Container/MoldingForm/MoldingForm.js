@@ -416,10 +416,63 @@ class MoldingForm extends Component {
               </Label>
             </div>
             <div className='app__form-item'>
-              <Button type='submit' onClick={this.onClick}>Submit</Button>
+              <Button type='submit' onClick={this.handleClick}>Submit</Button>
               <Button type='reset' onClick={this.handleReset}>Reset</Button>            
             </div>
           </Form>
+        </div>
+        <div>
+          <div className='app_output'>
+            <div>
+                <p className="p-text">Customer Name: {this.state.customerName} </p>
+            </div>
+            <div>
+                <p className="p-text">Customer ID: {this.state.customerID} </p>
+            </div>
+            <div>
+                <p className="p-text">Quote Number: {this.state.quoteNumber} </p>
+            </div>
+            <div>
+                <p className="p-text">Order Date: {this.state.orderDate} </p>
+            </div>
+            <div>
+                <p className="p-text">Ship Date: {this.state.requestShip} </p>
+            </div>
+            <div>
+                <p className="p-text">Pattern Width: {this.state.patternWidth} </p>
+            </div>
+            <div>
+                <p className="p-text">Category: {this.state.category} </p>
+            </div>
+            <div>
+                <p className="p-text">Lumber Thickness: {this.state.lumberThickness} </p>
+            </div>
+            <div>
+                <p className="p-text">Clear: {this.state.clearYN} </p>
+            </div>
+            <div>
+                <p className="p-text">Cutbacks: {this.state.cutbacksYN} </p>
+            </div>
+            <div>
+                <p className="p-text">New Knife: {this.state.newKnifeYN} </p>
+            </div>
+            <div>
+                <p className="p-text">Resawing: {this.state.resawingYN} </p>
+            </div>
+            <div>
+                <p className="p-text">Species: {this.state.species} </p>
+            </div>
+            <div>
+                <p className="p-text">Total Price: {this.state.totalPrice} </p>
+            </div>
+            <div>
+                <p className="p-text">Price/LFT: {this.state.totalPerLFT} </p>
+            </div>
+            <div>
+                <p className="p-text">Est. Weight: {this.state.orderWeight} </p>
+            </div>
+          </div>
+
         </div>
       </>
     )

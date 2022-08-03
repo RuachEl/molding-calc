@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Header, MoldingForm, Footer } from './Container';
+import { Header, MoldingForm } from './Container';
 import './App.css';
 
 
